@@ -1,1 +1,3 @@
-<p>home works!</p>
+<div *ngFor="let tx of transactions">
+    <p>{{tx.id}} {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}</p>
+</div>

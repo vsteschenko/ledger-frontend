@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NgModule } from '@angular/core'
+import { Component, OnInit, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
