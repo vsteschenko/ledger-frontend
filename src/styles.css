@@ -4,7 +4,6 @@
 @layer reset, primeng;
 .content {
     height: 90vh;
-    /* border: 1px solid red; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,14 +14,20 @@
     flex-direction: column;
 }
 
-.email, .email input, .password, .password input {
+.email, .email input, .password, .password input, .name, .name input {
     width: 250px;
 }
+
 .password {
     margin-bottom: 10px;
 }
-.button{
+
+.button {
     display:flex;
     justify-content: center;
     align-items: center;
+}
+
+.signup {
+    color: rgb(29, 155, 240);
 }

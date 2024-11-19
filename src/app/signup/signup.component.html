@@ -10,6 +10,14 @@
               [(ngModel)]="email" 
               placeholder="email"/>
         </div>
+        <div class="name">
+          <label for="name"></label>
+          <input 
+              pInputText 
+              id="name"
+              [(ngModel)]="name" 
+              placeholder="your name"/>
+        </div>
       
         <p-password 
           [(ngModel)]="password" 
@@ -17,8 +25,8 @@
           class="password"
           placeholder="password"/>
       
-        <p-button label="sign in" styleClass="p-button-success" (click)="onSubmit()" class="button"></p-button>
-        <p>Don't have an account? <a class="signup" href="/signup">Sign Up</a></p>
+        <p-button label="sign up" styleClass="p-button-success" (click)="onSubmit()" class="button"></p-button>
+        <p>Don't have an account? <a class="signup" href="/signin">Sign In</a></p>
       </div>
     </div>
     

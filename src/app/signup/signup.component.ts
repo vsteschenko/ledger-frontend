@@ -10,17 +10,18 @@ import { Router } from '@angular/router';
 import { JwtAuthService } from '../jwt-auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signup',
   standalone: true,
   imports: [RouterOutlet, FormsModule, ButtonModule, InputTextModule, PasswordModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.css'
 })
-export class LoginComponent {
+export class SignupComponent {
 
   title = 'frontend_ledger_app';
   email: string = ''
   password: string = ''
+  name: string = ''
   data: any;
   check: string = ''
 
@@ -36,10 +37,11 @@ export class LoginComponent {
 
     const payload = {
       email: this.email,
+      name: this.name,
       password: this.password
     };
   
-    fetch('http://localhost:8080/v1/users/login', {
+    fetch('http://localhost:8080/v1/users/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'Application/json'
@@ -52,10 +54,10 @@ export class LoginComponent {
 
         if(this.data.success) {
           this.jwtService.setToken(this.data.message)
-          console.log("Login successful")
+          console.log("Signup successful")
           this.router.navigate(['/'])
         } else {
-          console.log('Login failed')
+          console.log('Signup failed')
         }
       })
       .catch(error => {
