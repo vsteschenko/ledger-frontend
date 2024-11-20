@@ -1,3 +1,6 @@
-<div *ngFor="let tx of transactions">
-    <p>{{tx.id}} {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}</p>
+<app-nav />
+<div class="container">
+    <div *ngFor="let tx of transactions">
+        <p>{{tx.id}} {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}</p>
+    </div>
 </div>

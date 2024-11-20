@@ -1,0 +1,9 @@
+<nav>
+    <div class="profile" (click)="sidebarVisible = true"></div>  
+    <p-sidebar [(visible)]="sidebarVisible" position="right">
+        <div class="sidebar">
+            <p (click)="signOut()">Sign Out</p>
+        </div>
+    </p-sidebar>
+</nav>
+

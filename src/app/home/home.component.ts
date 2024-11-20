@@ -1,11 +1,12 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { JwtAuthService } from '../jwt-auth.service';
 import { NgFor } from '@angular/common';
+import { NavComponent } from '../nav/nav.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NavComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
