@@ -16,14 +16,18 @@
               pInputText 
               id="name"
               [(ngModel)]="name" 
-              placeholder="your name"/>
+              placeholder="your name"
+              
+              />
         </div>
       
         <p-password 
           [(ngModel)]="password" 
           [toggleMask]="true" 
           class="password"
-          placeholder="password"/>
+          placeholder="password"
+          (keydown.enter)="onSubmit()"
+          />
       
         <p-button label="sign up" styleClass="p-button-success" (click)="onSubmit()" class="button"></p-button>
         <p>Don't have an account? <a class="signup" href="/signin">Sign In</a></p>

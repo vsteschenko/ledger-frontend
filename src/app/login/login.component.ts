@@ -17,7 +17,6 @@ import { JwtAuthService } from '../jwt-auth.service';
 })
 export class LoginComponent {
 
-  title = 'frontend_ledger_app';
   email: string = ''
   password: string = ''
   data: any;
@@ -28,6 +27,13 @@ export class LoginComponent {
   ngOnInit(): void {
     if(this.jwtService.isTokenValid()) {
       this.router.navigate(['/'])
+    }
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    console.log('Key pressed:', event.key);
+    if (event.key === 'Enter') {
+      this.onSubmit();
     }
   }
 
