@@ -1,4 +1,4 @@
-<app-nav />
+<app-nav></app-nav>
 <div class="container">
     <div class="txs">
         <div *ngFor="let tx of transactions" class="transaction">
@@ -6,8 +6,26 @@
         </div>
     </div>
     <div class="buttons">
+        <button id="receive" (click)="showDialog()">+</button>
         <button id="spend">-</button>
-        <button id="receive">+</button>
     </div>
-
 </div>
+<p-dialog header="Add transaction" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="flex align-items-center gap-3 mb-5">
+        <label for="category" class="font-semibold w-6rem"></label>
+        <p-dropdown 
+            [options]="incomeSources" 
+            [(ngModel)]="selectedCategory" 
+            placeholder="Select a category"
+        ></p-dropdown>
+    </div>
+    <div class="name">
+        <label for="name"></label>
+        <input 
+            pInputText 
+            id="name"
+            [(ngModel)]="name" 
+            placeholder="your name"
+            />
+      </div>
+</p-dialog>
