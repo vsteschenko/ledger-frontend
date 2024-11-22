@@ -1,6 +1,13 @@
 <app-nav />
 <div class="container">
-    <div *ngFor="let tx of transactions">
-        <p>{{tx.id}} {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}</p>
+    <div class="txs">
+        <div *ngFor="let tx of transactions" class="transaction">
+            {{tx.id}} {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}
+        </div>
     </div>
+    <div class="buttons">
+        <button id="spend">-</button>
+        <button id="receive">+</button>
+    </div>
+
 </div>

@@ -1,0 +1,41 @@
+.txs {
+    
+}
+.transaction:hover {
+    background-color: rgba(236, 236, 236, 0.717);
+    border-radius: 10px;
+}
+.transaction {
+    height: 40px;
+    display: flex;
+    padding: 5px 20px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttons {
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid rgb(217, 215, 215);
+    button {
+        margin: 10px 30px;
+        font-size: 30px;
+    }
+}
+#spend, #receive{
+    width: 100px;
+    height: 50px;
+}
+
+#spend {
+    background-color: palevioletred;
+    border: 1px solid palevioletred;
+    border-radius: 30px;
+}
+
+#receive {
+    background-color: palegreen;
+    border: 1px solid palegreen;
+    border-radius: 30px;
+}

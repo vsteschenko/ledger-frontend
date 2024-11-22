@@ -13,7 +13,10 @@ body {
     /* border: 1px solid red; */
     margin-left: 10%;
     margin-right: 10%;
-    
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .content {
