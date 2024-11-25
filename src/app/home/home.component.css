@@ -12,7 +12,11 @@
     margin-bottom: 5px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    width: 50%;
+    i {
+        cursor: pointer;
+    }
 }
 .buttons {
     display: flex;
@@ -21,6 +25,7 @@
     button {
         margin: 10px 30px;
         font-size: 30px;
+        cursor: pointer;
     }
 }
 #spend, #receive{

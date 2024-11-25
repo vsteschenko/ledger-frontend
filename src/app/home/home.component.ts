@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +18,15 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class HomeComponent implements OnInit {
   name: string = ''
+  amount: string = ''
+  comment: string = ''
+  location: string = ''
   transactions: TX[] = [];
-  visible: boolean = false;
+  visibleReceive: boolean = false;
+  visibleSpend: boolean = false;
+  selectedCategory: string = ''
+  answer: any
+
   incomeSources: string[] = [
     "Salary",
     "Freelance Work",
@@ -45,7 +53,6 @@ export class HomeComponent implements OnInit {
     "Cashback Rewards",
     "Stock Options"
   ];
-  
   spendCategories: string[] = [
     "Eating Out",
     "Groceries",
@@ -76,11 +83,8 @@ export class HomeComponent implements OnInit {
     "Car Maintenance",
     "Miscellaneous"
   ];
-  selectedCategory: string = ''
-  
-  user = { username: '', email: '' };
 
-  constructor(private jwtService: JwtAuthService) {}
+  constructor(private jwtService: JwtAuthService, private router:Router) {}
 
   ngOnInit(): void {
     this.fetchTransactions();
@@ -104,17 +108,76 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  showDialog(): void {
-    this.visible = true;
+  showDialogReceive(): void {
+    this.visibleReceive = true;
   }
 
-  saveUser(): void {
-    console.log('User saved:', this.user);
-    this.visible = false;
+  showDialogSpend(): void {
+    this.visibleSpend = true;
   }
 
   receive(): void {
     console.log('Receive clicked');
+  }
+
+  receiveTxCreate(): void {
+    if(this.jwtService.isTokenValid()) {
+      const payload = {
+        comment: this.comment,
+        category: this.selectedCategory,
+        amount: this.amount,
+        location: this.location
+      }
+
+      fetch('http://localhost:8080/v1/txs/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/json',
+          'Authorization': `Bearer ${this.jwtService.getToken()}`
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.answer = data
+        console.log(this.answer)
+      })
+    }
+  }
+
+  spendTxCreate(): void {
+    if(this.jwtService.isTokenValid()) {
+      const payload = {
+        comment: this.comment,
+        category: this.selectedCategory,
+        amount: -this.amount,
+        location: this.location
+      }
+
+      fetch('http://localhost:8080/v1/txs/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/json',
+          'Authorization': `Bearer ${this.jwtService.getToken()}`
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.answer = data
+        console.log(this.answer)
+      })
+    }
+  }
+
+  deleteTx(id: number): void {
+    fetch(`http://localhost:8080/v1/txs/delete?id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'Application/json',
+        'Authorization': `Bearer ${this.jwtService.getToken()}`
+      }
+    })
   }
 }
 
