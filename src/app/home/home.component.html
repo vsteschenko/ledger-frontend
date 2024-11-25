@@ -1,9 +1,9 @@
 <app-nav></app-nav>
 <div class="container">
     <div class="txs">
-        <div *ngFor="let tx of transactions" class="transaction">
+        <div *ngFor="let tx of transactions; let i = index" class="transaction">
             <div>
-                {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}
+                {{i+1}}. {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}
             </div>
              <i class="fa-solid fa-trash" (click)="deleteTx(tx.id)"></i>
         </div>
@@ -87,5 +87,5 @@
             placeholder="location"
             />
     </div>
-    <p-button label="confirm" styleClass="p-button-success" (click)="receiveTxCreate()" class="button"></p-button>
+    <p-button label="confirm" styleClass="p-button-success" (click)="spendTxCreate()" class="button"></p-button>
 </p-dialog>

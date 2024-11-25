@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
       .then(response => response.json())
       .then(data => {
         this.transactions = data;
-        console.log(this.transactions);
+        // console.log(this.transactions);
       })
       .catch(error => {
         console.error('Error fetching transactions:', error);
@@ -140,7 +140,7 @@ export class HomeComponent implements OnInit {
       .then(response => response.json())
       .then(data => {
         this.answer = data
-        console.log(this.answer)
+        this.visibleReceive = false;
       })
     }
   }
@@ -164,8 +164,8 @@ export class HomeComponent implements OnInit {
       })
       .then(response => response.json())
       .then(data => {
-        this.answer = data
-        console.log(this.answer)
+        this.answer = data;
+        this.visibleSpend = false;
       })
     }
   }
@@ -177,6 +177,12 @@ export class HomeComponent implements OnInit {
         'Content-Type': 'Application/json',
         'Authorization': `Bearer ${this.jwtService.getToken()}`
       }
+    })
+    .then(response => {
+      if(!response.ok) {
+        throw new Error('Failed to delete the transaction.');
+      }
+      this.transactions = this.transactions.filter(tx => tx.id !== id)
     })
   }
 }
