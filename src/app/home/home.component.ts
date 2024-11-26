@@ -17,17 +17,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  amount: string = ''
-  comment: string = ''
-  location: string = ''
+  amount: string = '';
+  comment: string = '';
+  location: string = '';
   transactions: TX[] = [];
   visibleReceive: boolean = false;
   visibleSpend: boolean = false;
   visibleChange: boolean = false;
-  currentOperationType: string = ''
+  currentOperationType: string = '';
 
-  selectedCategory: string = ''
-  answer: any
+  selectedCategory: string = '';
+  answer: any;
+  currentTx: any;
 
   incomeSources: string[] = [
     "Salary",
@@ -192,6 +193,7 @@ export class HomeComponent implements OnInit {
   }
 
   showDialogChange(tx: TX): void {
+    this.currentTx = tx;
     this.currentOperationType = tx.amount < 0 ? 'spend' : 'receive';
     this.selectedCategory = tx.category;
     this.amount = tx.amount.toString();
@@ -203,9 +205,28 @@ export class HomeComponent implements OnInit {
   }
 
   confirmChange(): void{
+    const payload = {
+      id:this.currentTx.id,
+      comment: this.comment,
+      category: this.selectedCategory,
+      amount: this.amount,
+    }
     fetch('http://localhost:8080/v1/txs/update', {
-      
+      method: 'POST',
+      headers: {
+        'Content-Type': 'Application/json',
+        'Authorization': `Bearer ${this.jwtService.getToken()}`
+      },
+      body: JSON.stringify(payload)
     })
+    .then(response => response.json())
+    .then(data => {
+      this.answer = data;
+      console.log(data)
+      this.visibleChange = false;
+      this.cleanInputs()
+    })
+    
   }
 
   deleteTx(id: number): void {
@@ -228,7 +249,6 @@ export class HomeComponent implements OnInit {
     this.amount = '';
     this.location = '';
     this.comment = '';
-
   }
 
 }

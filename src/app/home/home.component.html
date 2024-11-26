@@ -127,15 +127,6 @@
                 placeholder="comment"
                 />
         </div>
-        <div class="location">
-            <label for="location"></label>
-            <input 
-                pInputText 
-                id="location"
-                [(ngModel)]="location" 
-                placeholder="location"
-                />
-        </div>
     </div>
-    <p-button label="confirm" styleClass="p-button-success" class="button"></p-button>
+    <p-button label="confirm" styleClass="p-button-success" class="button" (click)="confirmChange()"></p-button>
 </p-dialog>
