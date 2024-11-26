@@ -222,7 +222,12 @@ export class HomeComponent implements OnInit {
     .then(response => response.json())
     .then(data => {
       this.answer = data;
-      console.log(data)
+      const tx = this.transactions.find(tx => tx.id == this.currentTx.id)
+      if(tx) {
+        tx.comment = this.comment
+        tx.category = this.selectedCategory
+        tx.amount = parseFloat(this.amount)
+      }
       this.visibleChange = false;
       this.cleanInputs()
     })
