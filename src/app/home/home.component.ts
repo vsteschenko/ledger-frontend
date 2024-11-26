@@ -17,13 +17,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  name: string = ''
   amount: string = ''
   comment: string = ''
   location: string = ''
   transactions: TX[] = [];
   visibleReceive: boolean = false;
   visibleSpend: boolean = false;
+  visibleChange: boolean = false;
+  currentOperationType: string = ''
+
   selectedCategory: string = ''
   answer: any
 
@@ -147,6 +149,7 @@ export class HomeComponent implements OnInit {
         this.answer = data
         this.transactions.push(payloadNew)
         this.visibleReceive = false;
+        this.cleanInputs()
       })
     }
   }
@@ -183,9 +186,26 @@ export class HomeComponent implements OnInit {
         this.answer = data;
         this.transactions.push(payloadNew)
         this.visibleSpend = false;
-        
+        this.cleanInputs()
       })
     }
+  }
+
+  showDialogChange(tx: TX): void {
+    this.currentOperationType = tx.amount < 0 ? 'spend' : 'receive';
+    this.selectedCategory = tx.category;
+    this.amount = tx.amount.toString();
+    this.comment = tx.comment;
+    this.location = tx.location;
+    this.visibleChange = true;
+    // add logic to confirm tx and after that cleanInputs
+    // this.cleanInputs()
+  }
+
+  confirmChange(): void{
+    fetch('http://localhost:8080/v1/txs/update', {
+      
+    })
   }
 
   deleteTx(id: number): void {
@@ -203,6 +223,14 @@ export class HomeComponent implements OnInit {
       this.transactions = this.transactions.filter(tx => tx.id !== id)
     })
   }
+
+  cleanInputs(): void {
+    this.amount = '';
+    this.location = '';
+    this.comment = '';
+
+  }
+
 }
 
 interface TX {

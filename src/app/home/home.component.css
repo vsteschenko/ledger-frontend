@@ -68,3 +68,16 @@
 .amount, .comment, .location, .category {
     margin-bottom: 10px;
 }
+#settings {
+    margin-right: 10px;
+    color: black;
+}
+#settings:hover {
+    color: grey
+}
+#delete {
+    color: black;
+}
+#delete:hover {
+    color: grey;
+}
