@@ -116,21 +116,23 @@ export class HomeComponent implements OnInit {
     this.visibleSpend = true;
   }
 
-  receive(): void {
-    console.log('Receive clicked');
-  }
-
   receiveTxCreate(): void {
 
     if(this.jwtService.isTokenValid()) {
-      const payload: TX = {
-        id: Date.now(),
-        comment: this.comment,
-        category: this.selectedCategory,
-        amount: -this.amount,
-        location: this.location,
-        date: new Date().toISOString()
-      }
+      const payloadNew: TX = {
+          id: Date.now(),
+          comment: this.comment,
+          category: this.selectedCategory,
+          amount: parseFloat(this.amount),
+          location: this.location,
+          date: new Date().toLocaleString()
+        }
+        const payload = {
+          comment: this.comment,
+          category: this.selectedCategory,
+          amount: this.amount,
+          location: this.location
+        }
 
       fetch('http://localhost:8080/v1/txs/create', {
         method: 'POST',
@@ -143,7 +145,7 @@ export class HomeComponent implements OnInit {
       .then(response => response.json())
       .then(data => {
         this.answer = data
-        this.transactions.push(payload)
+        this.transactions.push(payloadNew)
         this.visibleReceive = false;
       })
     }
@@ -152,13 +154,20 @@ export class HomeComponent implements OnInit {
   spendTxCreate(): void {
  
     if(this.jwtService.isTokenValid()) {
-      const payload: TX = {
+
+      const payloadNew: TX = {
         id: Date.now(),
         comment: this.comment,
         category: this.selectedCategory,
-        amount: -this.amount,
+        amount: -parseFloat(this.amount),
         location: this.location,
-        date: new Date().toISOString()
+        date: new Date().toLocaleString()
+      }
+      const payload = {
+        comment: this.comment,
+        category: this.selectedCategory,
+        amount: -this.amount,
+        location: this.location
       }
 
       fetch('http://localhost:8080/v1/txs/create', {
@@ -172,7 +181,7 @@ export class HomeComponent implements OnInit {
       .then(response => response.json())
       .then(data => {
         this.answer = data;
-        this.transactions.push(payload)
+        this.transactions.push(payloadNew)
         this.visibleSpend = false;
         
       })

@@ -9,83 +9,87 @@
         </div>
     </div>
     <div class="buttons">
-        <button id="receive" (click)="showDialogReceive()">+</button>
-        <button id="spend" (click)="showDialogSpend()">-</button>
+        <button id="receive" (click)="showDialogReceive()">Receive</button>
+        <button id="spend" (click)="showDialogSpend()">Send</button>
     </div>
 </div>
-<p-dialog header="Add transaction" [modal]="true" [(visible)]="visibleReceive" [style]="{ width: '20rem', height: '20rem' }">
-    <div class="flex align-items-center gap-3 mb-5">
-        <label for="category" class="font-semibold w-6rem"></label>
-        <p-dropdown 
-            [options]="incomeSources" 
-            [(ngModel)]="selectedCategory" 
-            placeholder="Select a category"
-        ></p-dropdown>
-    </div>
-    <div class="amount">
-        <label for="amount"></label>
-        <input 
-            pInputText 
-            id="amount"
-            [(ngModel)]="amount" 
-            placeholder="amount"
-            />
-    </div>
-    <div class="comment">
-        <label for="comment"></label>
-        <input 
-            pInputText 
-            id="comment"
-            [(ngModel)]="comment" 
-            placeholder="comment"
-            />
-    </div>
-    <div class="location">
-        <label for="location"></label>
-        <input 
-            pInputText 
-            id="location"
-            [(ngModel)]="location" 
-            placeholder="location"
-            />
+<p-dialog header="Add transaction" [modal]="true" [(visible)]="visibleReceive" [style]="{ width: '25rem', height: '25rem' }">
+    <div class="dialogReceive">
+        <div class="category">
+            <label for="category" class="font-semibold w-6rem"></label>
+            <p-dropdown 
+                [options]="incomeSources" 
+                [(ngModel)]="selectedCategory" 
+                placeholder="Select a category"
+            ></p-dropdown>
+        </div>
+        <div class="amount">
+            <label for="amount"></label>
+            <input 
+                pInputText 
+                id="amount"
+                [(ngModel)]="amount" 
+                placeholder="amount"
+                />
+        </div>
+        <div class="comment">
+            <label for="comment"></label>
+            <input 
+                pInputText 
+                id="comment"
+                [(ngModel)]="comment" 
+                placeholder="comment"
+                />
+        </div>
+        <div class="location">
+            <label for="location"></label>
+            <input 
+                pInputText 
+                id="location"
+                [(ngModel)]="location" 
+                placeholder="location"
+                />
+        </div>
     </div>
     <p-button label="confirm" styleClass="p-button-success" (click)="receiveTxCreate()" class="button"></p-button>
 </p-dialog>
-<p-dialog header="Add transaction" [modal]="true" [(visible)]="visibleSpend" [style]="{ width: '20rem', height: '20rem' }">
-    <div class="flex align-items-center gap-3 mb-5">
-        <label for="category" class="font-semibold w-6rem"></label>
-        <p-dropdown 
-            [options]="spendCategories" 
-            [(ngModel)]="selectedCategory" 
-            placeholder="Select a category"
-        ></p-dropdown>
-    </div>
-    <div class="amount">
-        <label for="amount"></label>
-        <input 
-            pInputText 
-            id="amount"
-            [(ngModel)]="amount" 
-            placeholder="amount"
-            />
-    </div>
-    <div class="comment">
-        <label for="comment"></label>
-        <input 
-            pInputText 
-            id="comment"
-            [(ngModel)]="comment" 
-            placeholder="comment"
-            />
-    </div>
-    <div class="location">
-        <label for="location"></label>
-        <input 
-            pInputText 
-            id="location"
-            [(ngModel)]="location" 
-            placeholder="location"
-            />
+<p-dialog header="Add transaction" [modal]="true" [(visible)]="visibleSpend" [style]="{ width: '25rem', height: '25rem' }">
+    <div class="dialogReceive">
+        <div class="category">
+            <label for="category" class="font-semibold w-6rem"></label>
+            <p-dropdown 
+                [options]="spendCategories" 
+                [(ngModel)]="selectedCategory" 
+                placeholder="Select a category"
+            ></p-dropdown>
+        </div>
+        <div class="amount">
+            <label for="amount"></label>
+            <input 
+                pInputText 
+                id="amount"
+                [(ngModel)]="amount" 
+                placeholder="amount"
+                />
+        </div>
+        <div class="comment">
+            <label for="comment"></label>
+            <input 
+                pInputText 
+                id="comment"
+                [(ngModel)]="comment" 
+                placeholder="comment"
+                />
+        </div>
+        <div class="location">
+            <label for="location"></label>
+            <input 
+                pInputText 
+                id="location"
+                [(ngModel)]="location" 
+                placeholder="location"
+                />
+        </div>
     </div>
     <p-button label="confirm" styleClass="p-button-success" (click)="spendTxCreate()" class="button"></p-button>
 </p-dialog>
