@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
+import { TransactionService, TX } from '../transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -87,27 +88,38 @@ export class HomeComponent implements OnInit {
     "Miscellaneous"
   ];
 
-  constructor(private jwtService: JwtAuthService, private router:Router) {}
+  constructor(private jwtService: JwtAuthService, private router:Router, private transactionService: TransactionService) {}
 
   ngOnInit(): void {
-    this.fetchTransactions();
+    // this.fetchTransactions();
+    this.transactionService.transactions$.subscribe(transactions => {
+      this.transactions = transactions})
   }
 
+  // fetchTransactions(): void {
+  //   fetch('http://localhost:8080/v1/txs', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Bearer ${this.jwtService.getToken()}`
+  //     }
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.transactions = data;
+  //       // console.log(this.transactions);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching transactions:', error);
+  //     });
+  // }
   fetchTransactions(): void {
-    fetch('http://localhost:8080/v1/txs', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.jwtService.getToken()}`
-      }
-    })
+    // Example of setting transactions after fetching
+    // Fetch logic remains the same
+    fetch('http://localhost:8080/v1/txs', { method: 'GET' })
       .then(response => response.json())
       .then(data => {
-        this.transactions = data;
-        // console.log(this.transactions);
-      })
-      .catch(error => {
-        console.error('Error fetching transactions:', error);
+        this.transactionService.setTransactions(data); // Update service
       });
   }
 
@@ -235,6 +247,7 @@ export class HomeComponent implements OnInit {
   }
 
   deleteTx(id: number): void {
+    this.transactions = this.transactions.filter(tx => tx.id !== id)
     fetch(`http://localhost:8080/v1/txs/delete?id=${id}`, {
       method: 'DELETE',
       headers: {
@@ -246,7 +259,6 @@ export class HomeComponent implements OnInit {
       if(!response.ok) {
         throw new Error('Failed to delete the transaction.');
       }
-      this.transactions = this.transactions.filter(tx => tx.id !== id)
     })
   }
 
@@ -258,11 +270,11 @@ export class HomeComponent implements OnInit {
 
 }
 
-interface TX {
-  id: number;
-  amount: number;
-  category: string;
-  location: string;
-  comment: string;
-  date: string;
-}
+// interface TX {
+//   id: number;
+//   amount: number;
+//   category: string;
+//   location: string;
+//   comment: string;
+//   date: string;
+// }

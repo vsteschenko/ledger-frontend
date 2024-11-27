@@ -1,9 +1,20 @@
 <nav>
-    <div class="profile" (click)="sidebarVisible = true"></div>  
-    <p-sidebar [(visible)]="sidebarVisible" position="right">
-        <div class="sidebar">
-            <p><i class="fa-solid fa-user"></i> Your profile</p>
-            <p (click)="signOut()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</p>
+    <div class="empty">{{selectedYear}}</div>
+    <div class="months">
+        <div *ngFor="let month of months; let i = index"
+            [class.active]="selectedMonth === month"
+            [class.neighbor-left]="i === months.indexOf(selectedMonth) - 1"
+            [class.neighbor-right]="i === months.indexOf(selectedMonth) + 1"
+            (click)="scrollToMonth(month)">
+            {{month}}
         </div>
-    </p-sidebar>
+    </div>
+    <div class="profile" (click)="sidebarVisible = true"></div>  
+
 </nav>
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+    <div class="sidebar">
+        <p><i class="fa-solid fa-user"></i> Your profile</p>
+        <p (click)="signOut()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</p>
+    </div>
+</p-sidebar>
