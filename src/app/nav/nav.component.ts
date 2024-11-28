@@ -19,10 +19,16 @@ export class NavComponent {
   sidebarVisible = false;
   months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   selectedMonth: string = this.months[0];
+  currentMonth: string = "";
   selectedYear: number = 2024;
   transactions: string[] = [];
   constructor(private jwtService: JwtAuthService, private router: Router, private transactionService: TransactionService) {}
 
+  ngOnInit(): void {
+    const now = new Date()
+    this.selectedMonth = this.months[now.getMonth()]
+    this.getFilteredTransactions(this.selectedMonth)
+  }
   signOut(): void {
     this.jwtService.deleteToken()
     this.router.navigate(['/signin'])
@@ -31,10 +37,8 @@ export class NavComponent {
   scrollToMonth(month: string): void {
     this.selectedMonth = month;
     const monthIndex = this.months.indexOf(month);
-
     const sliderElement = document.querySelector('.months') as HTMLElement;
     const monthElements = Array.from(sliderElement.children) as HTMLElement[];
-
     const leftOffset = monthElements[monthIndex].offsetLeft - sliderElement.offsetWidth / 2 + monthElements[monthIndex].offsetWidth / 2;
 
     sliderElement.scrollTo({
