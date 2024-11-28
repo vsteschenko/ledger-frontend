@@ -7,6 +7,7 @@ import { JwtAuthService } from '../jwt-auth.service';
 import { Router } from '@angular/router';
 import { TransactionService, TX } from '../transaction.service';
 
+
 @Component({
   selector: 'app-nav',
   standalone: true,

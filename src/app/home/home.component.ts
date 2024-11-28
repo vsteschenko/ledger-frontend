@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   visibleSpend: boolean = false;
   visibleChange: boolean = false;
   currentOperationType: string = '';
+  date: string = "";
 
   selectedCategory: string = '';
   answer: any;
@@ -122,28 +123,54 @@ export class HomeComponent implements OnInit {
           location: this.location,
           date: new Date().toLocaleString()
         }
+
+      if(this.date == '') {
         const payload = {
           comment: this.comment,
           category: this.selectedCategory,
           amount: this.amount,
           location: this.location
         }
+        fetch('http://localhost:8080/v1/txs/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'Application/json',
+            'Authorization': `Bearer ${this.jwtService.getToken()}`
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+          this.answer = data
+          this.transactions.push(payloadNew)
+          this.visibleReceive = false;
+          this.cleanInputs()
+        })
+      } else {
+        const payload = {
+          comment: this.comment,
+          category: this.selectedCategory,
+          amount: this.amount,
+          location: this.location,
+          date: this.date
+        }
+        fetch('http://localhost:8080/v1/txs/create_with_time', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'Application/json',
+            'Authorization': `Bearer ${this.jwtService.getToken()}`
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+          this.answer = data
+          this.transactions.push(payloadNew)
+          this.visibleReceive = false;
+          this.cleanInputs()
+        })
+      }
 
-      fetch('http://localhost:8080/v1/txs/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'Application/json',
-          'Authorization': `Bearer ${this.jwtService.getToken()}`
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.answer = data
-        this.transactions.push(payloadNew)
-        this.visibleReceive = false;
-        this.cleanInputs()
-      })
     }
   }
 
