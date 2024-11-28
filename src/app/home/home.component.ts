@@ -91,35 +91,15 @@ export class HomeComponent implements OnInit {
   constructor(private jwtService: JwtAuthService, private router:Router, private transactionService: TransactionService) {}
 
   ngOnInit(): void {
-    // this.fetchTransactions();
     this.transactionService.transactions$.subscribe(transactions => {
       this.transactions = transactions})
   }
 
-  // fetchTransactions(): void {
-  //   fetch('http://localhost:8080/v1/txs', {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${this.jwtService.getToken()}`
-  //     }
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       this.transactions = data;
-  //       // console.log(this.transactions);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching transactions:', error);
-  //     });
-  // }
   fetchTransactions(): void {
-    // Example of setting transactions after fetching
-    // Fetch logic remains the same
     fetch('http://localhost:8080/v1/txs', { method: 'GET' })
       .then(response => response.json())
       .then(data => {
-        this.transactionService.setTransactions(data); // Update service
+        this.transactionService.setTransactions(data);
       });
   }
 
@@ -212,8 +192,6 @@ export class HomeComponent implements OnInit {
     this.comment = tx.comment;
     this.location = tx.location;
     this.visibleChange = true;
-    // add logic to confirm tx and after that cleanInputs
-    // this.cleanInputs()
   }
 
   confirmChange(): void{
@@ -269,12 +247,3 @@ export class HomeComponent implements OnInit {
   }
 
 }
-
-// interface TX {
-//   id: number;
-//   amount: number;
-//   category: string;
-//   location: string;
-//   comment: string;
-//   date: string;
-// }
