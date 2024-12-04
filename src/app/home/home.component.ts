@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtAuthService } from '../jwt-auth.service';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { NavComponent } from '../nav/nav.component';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
@@ -10,10 +10,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { TransactionService, TX } from '../transaction.service';
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor, NgIf, NavComponent, DialogModule, FormsModule, ButtonModule, DropdownModule, InputTextModule],
+  imports: [CommonModule, NgFor, NgIf, NavComponent, DialogModule, FormsModule, ButtonModule, DropdownModule, InputTextModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
   visibleSpend: boolean = false;
   visibleChange: boolean = false;
   currentOperationType: string = '';
-  date: string = "";
+  date: object = {};
 
   selectedCategory: string = '';
   answer: any;
@@ -93,7 +94,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.transactionService.transactions$.subscribe(transactions => {
-      this.transactions = transactions})
+      this.transactions = transactions.map(tx => ({
+        ...tx,
+        date: new Date(tx.date)
+      }));
+    })
   }
 
   fetchTransactions(): void {
@@ -121,10 +126,10 @@ export class HomeComponent implements OnInit {
           category: this.selectedCategory,
           amount: parseFloat(this.amount),
           location: this.location,
-          date: new Date().toLocaleString()
+          date: new Date()
         }
 
-      if(this.date == '') {
+      if(Object.keys(this.date).length === 0) {
         const payload = {
           comment: this.comment,
           category: this.selectedCategory,
@@ -184,7 +189,7 @@ export class HomeComponent implements OnInit {
         category: this.selectedCategory,
         amount: -parseFloat(this.amount),
         location: this.location,
-        date: new Date().toLocaleString()
+        date: new Date()
       }
       const payload = {
         comment: this.comment,

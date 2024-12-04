@@ -7,7 +7,7 @@ export interface TX {
   category: string;
   location: string;
   comment: string;
-  date: string;
+  date: Date;
 }
 
 @Injectable({

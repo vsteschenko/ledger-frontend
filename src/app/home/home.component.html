@@ -3,7 +3,7 @@
     <div class="txs">
         <div *ngFor="let tx of transactions; let i = index" class="transaction">
             <div>
-                {{i+1}}. {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{tx.date}}
+                {{i+1}}. {{tx.amount}} {{tx.category}} {{tx.location}} {{tx.comment}} {{ tx.date | date:'HH:mm dd.MM.yyyy' }}
             </div>
             <div>
                 <i class="fa-solid fa-gear" id="settings" (click)="showDialogChange(tx)"></i>
