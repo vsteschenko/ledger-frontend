@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { JwtAuthService } from '../jwt-auth.service';
 import { Router } from '@angular/router';
 import { TransactionService, TX } from '../transaction.service';
+import { TransactionDateService } from '../transaction-date.service';
 
 
 @Component({
@@ -22,11 +23,17 @@ export class NavComponent {
   currentMonth: string = "";
   selectedYear: number = 2024;
   transactions: string[] = [];
-  constructor(private jwtService: JwtAuthService, private router: Router, private transactionService: TransactionService) {}
+  constructor(
+    private jwtService: JwtAuthService,
+    private router: Router,
+    private transactionService: TransactionService,
+    private transactionDateService: TransactionDateService) {}
 
   ngOnInit(): void {
     const now = new Date()
     this.selectedMonth = this.months[now.getMonth()]
+    this.transactionDateService.setSelectedMonth(this.selectedMonth)
+    this.transactionDateService.setSelectedYear(this.selectedYear)
     this.getFilteredTransactions(this.selectedMonth)
   }
   signOut(): void {
@@ -40,7 +47,8 @@ export class NavComponent {
     const sliderElement = document.querySelector('.months') as HTMLElement;
     const monthElements = Array.from(sliderElement.children) as HTMLElement[];
     const leftOffset = monthElements[monthIndex].offsetLeft - sliderElement.offsetWidth / 2 + monthElements[monthIndex].offsetWidth / 2;
-
+    this.transactionDateService.setSelectedMonth(this.selectedMonth)
+    this.transactionDateService.setSelectedYear(this.selectedYear)
     sliderElement.scrollTo({
         left: leftOffset,
         behavior: 'smooth',
@@ -60,6 +68,7 @@ export class NavComponent {
     .then(response => response.json())
     .then((data:TX[]) => {
       this.transactionService.setTransactions(data)
+      // console.log(data)
     })
   }
 }

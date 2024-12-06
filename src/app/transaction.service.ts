@@ -30,4 +30,5 @@ export class TransactionService {
     const currentTransactions = this.transactionsSubject.value;
     this.transactionsSubject.next(currentTransactions.filter(tx => tx.id !== id));
   }
+
 }

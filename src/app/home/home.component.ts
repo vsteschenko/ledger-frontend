@@ -9,6 +9,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { TransactionService, TX } from '../transaction.service';
+import { TransactionDateService } from '../transaction-date.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -28,10 +30,14 @@ export class HomeComponent implements OnInit {
   visibleChange: boolean = false;
   currentOperationType: string = '';
   date: object = {};
-
+  selectedYear: number = 0;
+  selectedMonth: Observable<string>;
   selectedCategory: string = '';
   answer: any;
   currentTx: any;
+  currentMonth: string = ''
+  monthAreSame: boolean = false;
+
 
   incomeSources: string[] = [
     "Salary",
@@ -90,15 +96,42 @@ export class HomeComponent implements OnInit {
     "Miscellaneous"
   ];
 
-  constructor(private jwtService: JwtAuthService, private router:Router, private transactionService: TransactionService) {}
-
+  constructor(
+    private jwtService: JwtAuthService,
+    private router:Router, 
+    private transactionService: TransactionService,
+    private transactionDateService: TransactionDateService) {
+      this.selectedMonth = this.transactionDateService.selectedMonth$
+      this.selectedYear = this.transactionDateService.selectedYear$
+    }
+  
   ngOnInit(): void {
+    const now = new Date()
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June', 
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    this.selectedMonth.subscribe(month => {
+      if(month == months[now.getMonth()]) {
+        console.log(month)
+        console.log(months[now.getMonth()])
+        this.currentMonth = months[now.getMonth()]
+        this.monthAreSame = true
+        console.log(this.monthAreSame)
+      } else {
+        this.monthAreSame = false
+        console.log(this.monthAreSame)
+      }
+    })
+    
+
     this.transactionService.transactions$.subscribe(transactions => {
       this.transactions = transactions.map(tx => ({
         ...tx,
         date: new Date(tx.date)
       }));
     })
+    this.selectedMonth = this.transactionDateService.selectedMonth$
   }
 
   fetchTransactions(): void {
@@ -129,7 +162,8 @@ export class HomeComponent implements OnInit {
           date: new Date()
         }
 
-      if(Object.keys(this.date).length === 0) {
+      // if(Object.keys(this.date).length === 0) {
+      if(this.monthAreSame){
         const payload = {
           comment: this.comment,
           category: this.selectedCategory,
@@ -152,30 +186,36 @@ export class HomeComponent implements OnInit {
           this.cleanInputs()
         })
       } else {
-        const payload = {
-          comment: this.comment,
-          category: this.selectedCategory,
-          amount: this.amount,
-          location: this.location,
-          date: this.date
-        }
-        fetch('http://localhost:8080/v1/txs/create_with_time', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'Application/json',
-            'Authorization': `Bearer ${this.jwtService.getToken()}`
-          },
-          body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => {
-          this.answer = data
-          this.transactions.push(payloadNew)
-          this.visibleReceive = false;
-          this.cleanInputs()
+        this.selectedMonth.subscribe(month => {
+          console.log(`${month} and ${this.currentMonth}`)
+          const payload = {
+            comment: this.comment,
+            category: this.selectedCategory,
+            amount: this.amount,
+            location: this.location,
+            date: {
+              monthOftheYear: month,
+              year: this.selectedYear
+            }
+          }
+          console.log(payload)
+          fetch('http://localhost:8080/v1/txs/create_with_time', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'Application/json',
+              'Authorization': `Bearer ${this.jwtService.getToken()}`
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(data => {
+            this.answer = data
+            this.transactions.push(payloadNew)
+            this.visibleReceive = false;
+            this.cleanInputs()
+          })
         })
       }
-
     }
   }
 
@@ -197,7 +237,7 @@ export class HomeComponent implements OnInit {
         amount: -this.amount,
         location: this.location
       }
-
+      
       fetch('http://localhost:8080/v1/txs/create', {
         method: 'POST',
         headers: {
@@ -270,6 +310,10 @@ export class HomeComponent implements OnInit {
         throw new Error('Failed to delete the transaction.');
       }
     })
+  }
+
+  compareMontth(): void {
+
   }
 
   cleanInputs(): void {
